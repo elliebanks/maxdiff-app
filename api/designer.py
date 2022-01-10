@@ -9,7 +9,6 @@ def get_sample_design(
         number_of_screens,
         max_items_per_screen,
         screens_with_max,
-
 ):
     is_possible_to_show_all_items = max_items_per_screen * number_of_screens >= number_of_items
     if not is_possible_to_show_all_items:
@@ -63,7 +62,6 @@ def get_sample_design(
         example_version.append(screen)
 
     return example_version, items_per_screen
-
 
 
 def get_parameters_for_screens_with_blanks(
