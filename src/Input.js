@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   NumberInput,
   NumberInputField,
@@ -12,6 +12,8 @@ import {
   Tr,
   Thead,
   Th,
+  Stack,
+  Box,
 } from '@chakra-ui/react';
 
 export default function Input() {
@@ -62,8 +64,9 @@ export default function Input() {
 
   useEffect(
     function getVersionPreview() {
-      console.log(inputs);
       if (Object.keys(inputs).some(key => inputs[key] === '')) {
+        setError(null);
+        setSampleDesign(null);
         return;
       }
       let status = 0;
@@ -94,92 +97,98 @@ export default function Input() {
 
   return (
     <>
-      <form onSubmit={onSubmit}>
-        <Text mb="8px">Number of Versions:</Text>
-        <NumberInput
-          value={isNaN(inputs.versions) ? '' : inputs.versions}
-          onChange={(valueAsString, valueAsNumber) =>
-            handleInputChange(valueAsNumber, 'versions')
-          }
-        >
-          <NumberInputField type="int" />
-        </NumberInput>
+      <Stack direction={['column', 'row']} justify={'space-between'}>
+        <form onSubmit={onSubmit}>
+          <Text mb="8px">Number of Versions:</Text>
+          <NumberInput
+            value={isNaN(inputs.versions) ? '' : inputs.versions}
+            onChange={(valueAsString, valueAsNumber) =>
+              handleInputChange(valueAsNumber, 'versions')
+            }
+          >
+            <NumberInputField type="int" required />
+          </NumberInput>
 
-        <Text mb="8px">Number of Items:</Text>
-        <NumberInput
-          value={inputs.numOfItems}
-          onChange={(valueAsString, valueAsNumber) =>
-            handleInputChange(valueAsNumber, 'numOfItems')
-          }
-        >
-          <NumberInputField type="int" />
-        </NumberInput>
+          <Text mb="8px">Number of Items:</Text>
+          <NumberInput
+            defaultValue={20}
+            value={inputs.numOfItems}
+            onChange={(valueAsString, valueAsNumber) =>
+              handleInputChange(valueAsNumber, 'numOfItems')
+            }
+          >
+            <NumberInputField type="int" required />
+          </NumberInput>
+          <Text mb="8px">Number of Screens:</Text>
+          <NumberInput
+            defaultValue={5}
+            value={inputs.screens}
+            onChange={(valueAsString, valueAsNumber) =>
+              handleInputChange(valueAsNumber, 'screens')
+            }
+          >
+            <NumberInputField type="int" required />
+          </NumberInput>
+          <Text mb="8px">Maximum Items per Screen:</Text>
+          <NumberInput
+            defaultValue={4}
+            value={inputs.maxItemsPerScreen}
+            onChange={(valueAsString, valueAsNumber) =>
+              handleInputChange(valueAsNumber, 'maxItemsPerScreen')
+            }
+          >
+            <NumberInputField type="int" required />
+          </NumberInput>
+          <Text mb="8px">
+            Number of Screens with{' '}
+            {inputs.maxItemsPerScreen ?? 'max items per screen'} items:
+          </Text>
+          <NumberInput
+            defaultValue={4}
+            value={inputs.screensWithMaxItems}
+            onChange={(valueAsString, valueAsNumber) =>
+              handleInputChange(valueAsNumber, 'screensWithMaxItems')
+            }
+          >
+            <NumberInputField type="int" required />
+          </NumberInput>
+          <Button type="submit">Submit</Button>
+        </form>
 
-        <Text mb="8px">Number of Screens:</Text>
-        <NumberInput
-          value={inputs.screens}
-          onChange={(valueAsString, valueAsNumber) =>
-            handleInputChange(valueAsNumber, 'screens')
-          }
-        >
-          <NumberInputField type="int" />
-        </NumberInput>
-
-        <Text mb="8px">Maximum Items per Screen:</Text>
-        <NumberInput
-          value={inputs.maxItemsPerScreen}
-          onChange={(valueAsString, valueAsNumber) =>
-            handleInputChange(valueAsNumber, 'maxItemsPerScreen')
-          }
-        >
-          <NumberInputField type="int" />
-        </NumberInput>
-
-        <Text mb="8px">
-          Number of Screens with{' '}
-          {inputs.maxItemsPerScreen ?? 'max items per screen'} items:
-        </Text>
-        <NumberInput
-          value={inputs.screensWithMaxItems}
-          onChange={(valueAsString, valueAsNumber) =>
-            handleInputChange(valueAsNumber, 'screensWithMaxItems')
-          }
-        >
-          <NumberInputField type="int" />
-        </NumberInput>
-
-        <Button type="submit">Submit</Button>
-      </form>
-
-      {error ? (
-        <Alert status="error">
-          <AlertIcon />
-          {error}
-        </Alert>
-      ) : null}
-
-      {sampleDesign ? (
-        <Table>
-          <Thead>
-            <Tr>
-              <Th />
-              {sampleDesign[0].map((item, i) => (
-                <Th key={i}>Item {i + 1}</Th>
-              ))}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {sampleDesign.map((row, i) => (
-              <Tr key={i}>
-                <Th>screen {i + 1}</Th>
-                {row.map((item, i) => (
-                  <Td key={i}>{item}</Td>
+        <Box>
+          {sampleDesign ? (
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th />
+                  {sampleDesign[0].map((item, i) => (
+                    <Th key={i}>Item {i + 1}</Th>
+                  ))}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {sampleDesign.map((row, i) => (
+                  <Tr key={i}>
+                    <Th>screen {i + 1}</Th>
+                    {row.map((item, i) => (
+                      <Td key={i}>{item}</Td>
+                    ))}
+                  </Tr>
                 ))}
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      ) : null}
+              </Tbody>
+            </Table>
+          ) : null}
+        </Box>
+      </Stack>
+
+      <Box mt={{ base: 4, md: 100 }} ml={{ md: 6 }}>
+        {error ? (
+          <Alert status="error">
+            <AlertIcon />
+            {error}
+          </Alert>
+        ) : null}
+      </Box>
     </>
   );
 }

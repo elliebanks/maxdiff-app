@@ -190,7 +190,9 @@ def validate_design(
 
 	print('\nSaving design...')
 	design_as_df.drop('Blanks', axis=1, inplace=True)
-	# design_as_df.to_excel(fn, index=False)
+
+
+# design_as_df.to_excel(fn, index=False)
 
 
 def generate_design(
