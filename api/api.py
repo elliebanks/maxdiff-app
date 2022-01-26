@@ -52,7 +52,7 @@ def get_version_preview():
 	print(payload)
 	number_of_items = payload.get("numOfItems")
 	screens = payload.get("screens")
-	result = get_sample_design(payload["numOfItems"], payload["screens"],
+	result = get_sample_design(payload["versions"], payload["numOfItems"], payload["screens"],
 							   payload["maxItemsPerScreen"],
 							   payload["screensWithMaxItems"])
 	print(result)
