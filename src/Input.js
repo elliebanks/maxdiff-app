@@ -126,9 +126,10 @@ export default function Input() {
     <>
       <Stack
         direction={{ lg: 'row', base: 'column' }}
-        justify-content={'space-between'}
+        justify-content={'center'}
+        alignContent={'space-evenly'}
       >
-        <Box m={2}>
+        <Box>
           <form onSubmit={onSubmit}>
             <Text m={4}>Number of Versions:</Text>
             <NumberInput
@@ -189,7 +190,7 @@ export default function Input() {
             </NumberInput>
 
             <Button
-              isDisabled={!inputs}
+              isDisabled={!inputs || error}
               mt={6}
               _hover={{ bg: 'orange.400' }}
               type="submit"
@@ -199,7 +200,7 @@ export default function Input() {
           </form>
         </Box>
 
-        <Box p={24}>
+        <Box p={24} w={'75%'}>
           {sampleDesign ? (
             <Table p={16}>
               <Thead>
@@ -224,9 +225,9 @@ export default function Input() {
           ) : null}
         </Box>
 
-        <Box>
+        <Box justifyContent={'center'}>
           {error ? (
-            <Alert justify={'center'} status="error">
+            <Alert w={'75%'} m={4} status="error">
               <AlertIcon />
               {error}
             </Alert>
