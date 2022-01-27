@@ -49,9 +49,9 @@ def get_sample_design(
 	is_possible_to_show_screens_with_max = screens_with_max <= number_of_screens
 	if not is_possible_to_show_screens_with_max:
 		return (
-			f"It's not possible to have {screens_with_max} screens with {max_items_per_screen} items"
+			f"It's not possible to have {screens_with_max} screens with {max_items_per_screen} maximum items"
 			f" based on these parameters."
-			f" At most, only {number_of_screens} screens can have {max_items_per_screen} items."
+			f" At most, only {number_of_screens} screens can have {max_items_per_screen} maximum items."
 		)
 
 	is_possible_to_make_design = max_items_per_screen * screens_with_max <= number_of_items
