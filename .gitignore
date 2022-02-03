@@ -9,6 +9,8 @@
 /coverage
 notebook.ipynb
 notebook2.ipynb
+notebook3.ipynb
+.prettierrc
 
 # production
 
