@@ -12,69 +12,65 @@ def get_sample_design(
 		max_items_per_screen,
 		screens_with_max,
 ):
-	is_possible_to_show_all_versions = 1000 > versions
+	# Checks for too low and too high input numbers:
+
+	# contain number of versions
+	is_possible_to_show_all_versions = 501 > versions > 0
 	if not is_possible_to_show_all_versions:
 		return (
 			f"It is not possible to create a design with {versions} versions."
-			f" At most, you can only have 999 versions."
-		)
-	is_possible_to_show_zero_versions = versions > 0
-	if not is_possible_to_show_zero_versions:
-		return (
-			f"It is not possible to create a design with {versions} versions."
-			f" You must have at least one version."
+			f" You must have at least one version and at most 500."
 		)
 
-	is_possible_to_show_zero_items = number_of_items > 0
+	# contains number of items
+	is_possible_to_show_zero_items = 1000 > number_of_items > 1
 	if not is_possible_to_show_zero_items:
 		return (
-			f"It is not possible to create a design with {number_of_items} number of items."
-			f" You must have at least one item."
+			f"It is not possible to create a design with {number_of_items} items."
+			f" You must have at least two items."
 		)
 
+	# contains number of screens
+	is_possible_with_enough_screens = 1 <= number_of_screens <= 21
+	if not is_possible_with_enough_screens:
+		return (
+			f"It is not possible to create a design with {number_of_screens} screens."
+			f" A design requires at least 1 screen and at most 20 screens."
+		)
+
+	# contains maximum items per screen
+	is_possible_to_show_max_items_per_screen = 2 <= max_items_per_screen < 16
+	if not is_possible_to_show_max_items_per_screen:
+		return (
+			f"It is not possible to show {max_items_per_screen} item(s) per screen."
+			f" You must have a minimum of 2 items and a maximum of 15 items per screen."
+		)
+
+	# contains screens with maximum items
+	is_possible_to_show_screens_with_max = screens_with_max > 0
+	if not is_possible_to_show_screens_with_max:
+		return (
+			f"It is not possible to show {screens_with_max} screens with maximum items."
+			f" You will need {number_of_screens - (number_of_screens * max_items_per_screen - number_of_items)}"
+			f" screens with maximum items."
+		)
+
+	# Checks that you do not have more screens with maximum items than total number of screens
+	is_possible_to_have_screens_with_max = number_of_screens >= screens_with_max
+	if not is_possible_to_have_screens_with_max:
+		return (
+			f"It is not possible to create a design with {screens_with_max} screens holding maximum items"
+			f" if there are {number_of_screens} total screens. You will need {screens_with_max - number_of_screens}"
+			f" more screen(s)."
+		)
+
+	# Checks that all items will fit
 	is_possible_to_show_all_items = max_items_per_screen * number_of_screens >= number_of_items
 	if not is_possible_to_show_all_items:
 		return (
-			f"It's not possible to show {number_of_items} items with these parameters."
+			f"It is not possible to show {number_of_items} items with these parameters."
 			f" At most, only {max_items_per_screen * number_of_screens}"
 			" items can be shown.")
-
-	is_possible_to_show_max_items_per_screen = max_items_per_screen < 20
-	if not is_possible_to_show_max_items_per_screen:
-		return (
-			f"It's not possible to show {max_items_per_screen} or more items per screen."
-			f" At most, you can only have 19 items per screen."
-		)
-
-	is_possible_to_show_screens_with_max = screens_with_max <= number_of_screens
-	if not is_possible_to_show_screens_with_max:
-		return (
-			f"It's not possible to have {screens_with_max} screens with {max_items_per_screen} maximum items"
-			f" based on these parameters."
-			f" At most, only {number_of_screens} screens can have {max_items_per_screen} maximum items."
-		)
-
-	is_possible_to_make_design = max_items_per_screen * screens_with_max <= number_of_items
-	if not is_possible_to_make_design:
-		return (
-			f"It is not possible to create a design with these parameters. You will need at"
-			f" least {max_items_per_screen * screens_with_max} items."
-		)
-
-	is_possible_to_show_zero_screens_with_max = screens_with_max > 0
-	if not is_possible_to_show_zero_screens_with_max:
-		return (
-			f"It's not possible to create a design with {screens_with_max} screens with {max_items_per_screen}"
-			f" maximum items per screen. You must have at least one screen with {max_items_per_screen}"
-			f" maximum items per screen."
-		)
-
-	is_possible_to_have_enough_screens = number_of_screens >= screens_with_max
-	if not is_possible_to_have_enough_screens:
-		return (
-			f"It is not possible to create a design with these parameters."
-			f" You will need at least {number_of_screens} screens with maximum items."
-		)
 
 	max_items_per_each_remaining_screen = get_parameters_for_screens_with_blanks(
 		number_of_items,
@@ -267,12 +263,12 @@ def generate_design(
 		screens_with_max
 	)
 
-	# max_items_per_each_remaining_screen = get_parameters_for_screens_with_blanks(
-	#     number_of_items,
-	#     screens_with_max,
-	#     max_items_per_screen,
-	#     number_of_screens
-	# )
+	max_items_per_each_remaining_screen = get_parameters_for_screens_with_blanks(
+		number_of_items,
+		screens_with_max,
+		max_items_per_screen,
+		number_of_screens
+	)
 
 	design_as_df, blanks_added = get_full_design(
 		versions,

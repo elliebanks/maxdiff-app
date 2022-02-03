@@ -55,7 +55,38 @@ def get_version_preview():
 	result = get_sample_design(payload["versions"], payload["numOfItems"], payload["screens"],
 							   payload["maxItemsPerScreen"],
 							   payload["screensWithMaxItems"])
+
 	print(result)
-	if isinstance(result, str):
+
+	error_messages = []
+
+	designer_returned_an_error = isinstance(result, str)
+	if designer_returned_an_error:
+		print("Designer returned an error, not running additional checks")
 		return {"message": result}, 400
+
+	# prints the first list of lists from the result
+	list1 = result[0]
+	print(list1)
+
+	# checks for screens with length of 1 or 0 in the list of lists
+	# checks for screens with less than 2 items
+	error_found = False
+	for screens in list1:
+		print(len(screens))
+		if len(screens) <= 1 or len(screens) - screens.count('') < 2:
+			error_found = True
+
+	# error message set up outside the for loop to prevent repeated messages
+
+	if error_found:
+		error_message = 'Based on these parameters you do not have enough items per screen to create a design.'
+		error_messages.append(error_message)
+
+	# checks if an error message is present and returns it to the front end
+	# if no error message is found, returns a sample design
+	if len(error_messages) > 0:
+		return {"message": error_messages}, 400
 	return {"sample_design": result[0]}
+
+# return {"message": ", ".join(error_messages)}, 400

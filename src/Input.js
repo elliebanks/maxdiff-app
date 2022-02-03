@@ -13,7 +13,7 @@ import {
   Thead,
   Th,
   Stack,
-  Box,
+  Container,
 } from '@chakra-ui/react';
 
 export default function Input() {
@@ -25,7 +25,7 @@ export default function Input() {
     numOfItems: parseInt('20'),
     screens: parseInt('5'),
     maxItemsPerScreen: parseInt('4'),
-    screensWithMaxItems: parseInt('4'),
+    screensWithMaxItems: parseInt('5'),
   });
 
   // initial state variable holds default values, parseInt() used to convert
@@ -125,11 +125,18 @@ export default function Input() {
   return (
     <>
       <Stack
+        justify={'center'}
+        align={'center'}
+        spacing={6}
         direction={{ lg: 'row', base: 'column' }}
-        justify-content={'center'}
-        alignContent={'space-evenly'}
       >
-        <Box>
+        <Container
+          maxW="container.md"
+          position={'relative'}
+          w={'75%'}
+          margin={5}
+          centerContent
+        >
           <form onSubmit={onSubmit}>
             <Text m={4}>Number of Versions:</Text>
             <NumberInput
@@ -198,11 +205,17 @@ export default function Input() {
               Create Design
             </Button>
           </form>
-        </Box>
+        </Container>
 
-        <Box p={24} w={'75%'}>
+        <Container
+          maxW="container.sm"
+          position={'relative'}
+          w={'50%'}
+          margin={5}
+          centerContent
+        >
           {sampleDesign ? (
-            <Table p={16}>
+            <Table>
               <Thead>
                 <Tr>
                   <Th />
@@ -223,16 +236,13 @@ export default function Input() {
               </Tbody>
             </Table>
           ) : null}
-        </Box>
-
-        <Box justifyContent={'center'}>
           {error ? (
-            <Alert w={'75%'} m={4} status="error">
+            <Alert status="error">
               <AlertIcon />
               {error}
             </Alert>
           ) : null}
-        </Box>
+        </Container>
       </Stack>
     </>
   );
