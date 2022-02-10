@@ -14,6 +14,7 @@ import {
   Th,
   Stack,
   Container,
+  Box,
 } from '@chakra-ui/react';
 
 export default function Input() {
@@ -127,14 +128,14 @@ export default function Input() {
       <Stack
         justify={'center'}
         align={'center'}
-        spacing={6}
+        spacing="120px"
         direction={{ lg: 'row', base: 'column' }}
       >
         <Container
-          maxW="container.md"
+          maxW="container.sm"
           position={'relative'}
           w={'75%'}
-          margin={5}
+          margin={12}
           centerContent
         >
           <form onSubmit={onSubmit}>
@@ -211,7 +212,7 @@ export default function Input() {
           maxW="container.sm"
           position={'relative'}
           w={'50%'}
-          margin={5}
+          margin={12}
           centerContent
         >
           {sampleDesign ? (

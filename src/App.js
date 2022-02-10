@@ -8,7 +8,7 @@ export default function App() {
     <>
       <ChakraProvider theme={theme}>
         <Box fontSize="lg">
-          <Grid minH="100vh" p={3}>
+          <Grid minH="100vh">
             <ColorModeSwitcher justifySelf="flex-end" />
             <VStack spacing={2}>
               <Input />

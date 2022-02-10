@@ -59,18 +59,72 @@ def get_sample_design(
 	is_possible_to_have_screens_with_max = number_of_screens >= screens_with_max
 	if not is_possible_to_have_screens_with_max:
 		return (
-			f"It is not possible to create a design with {screens_with_max} screens holding maximum items"
-			f" if there are {number_of_screens} total screens. You will need {screens_with_max - number_of_screens}"
-			f" more screen(s)."
+			f"Based on these parameters, it is not possible to create a design. You cannot have {screens_with_max} screens holding "
+			f"{max_items_per_screen} maximum items if there are only {number_of_screens} total screens."
 		)
 
 	# Checks that all items will fit
 	is_possible_to_show_all_items = max_items_per_screen * number_of_screens >= number_of_items
+	print(max_items_per_screen * number_of_screens)
+	print(number_of_items)
+	print(is_possible_to_show_all_items)
 	if not is_possible_to_show_all_items:
+		print(not is_possible_to_show_all_items)
 		return (
-			f"It is not possible to show {number_of_items} items with these parameters."
+			f"Based on these parameters, it is not possible to show {number_of_items} items."
 			f" At most, only {max_items_per_screen * number_of_screens}"
 			" items can be shown.")
+
+	# # TESTING FOR SCREENS WITH MAX # #
+
+	even_parameters = number_of_items % number_of_screens == 0
+	# unequal_screens = max_items_per_screen * screens_with_max != number_of_items
+	#
+	# # Checks that the max items * screens with max is equal to the number of items when total items is evenly divisible by total screens
+	# if even_parameters and unequal_screens:
+	# 	return (
+	# 		f"Based on these parameters, it is not possible to create a design. You will need "
+	# 		f"{number_of_screens - screens_with_max} more screen(s) with {max_items_per_screen} maximum items to display"
+	# 		f" {number_of_items} total items."
+	# 	)
+
+	random_parameter = number_of_items / max_items_per_screen == number_of_screens
+	equal_screens_with_max = number_of_screens == screens_with_max
+
+	if random_parameter and not equal_screens_with_max:
+		return (
+			f"Based on these parameters, it is not possible to create a design."
+			f" If you have {number_of_screens} screens with {number_of_items} items, you will"
+			f" need {number_of_screens - screens_with_max}  more screen(s) with {max_items_per_screen}"
+			f" maximum items."
+		)
+
+	# Checks that screens with max and number of screens are not the same when there is not an even amount of items divided by screens
+	if equal_screens_with_max and not even_parameters:
+		return (
+			f"Based on these parameters, it is not possible to create a design. You do not have enough items to"
+			f" fill {screens_with_max} screens with {max_items_per_screen} maximum items."
+		)
+	# For situations where there will be blanks in the design:
+	# Find remaining items and remaining screens after screens with maximum items are filled
+	# Use these parameters to compute if the maximum items remaining will create a valid design
+	# Check also to make sure that screens_remaining is not zero to avoid ZeroDivisionError
+
+	items_remaining = number_of_items - (max_items_per_screen * screens_with_max)
+	print(items_remaining)
+
+	screens_remaining = number_of_screens - screens_with_max
+	print(screens_remaining)
+
+	# prevents ZeroDivisionError
+	if screens_remaining > 0:
+		max_items_remaining_screens = ceil(items_remaining / screens_remaining)
+
+		if max_items_remaining_screens >= max_items_per_screen:
+			return (
+				f"Based on these parameters, it is not possible to create a design with"
+				f" {max_items_per_screen} maximum items on {screens_with_max} screens."
+			)
 
 	max_items_per_each_remaining_screen = get_parameters_for_screens_with_blanks(
 		number_of_items,

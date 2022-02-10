@@ -80,7 +80,7 @@ def get_version_preview():
 	# error message set up outside the for loop to prevent repeated messages
 
 	if error_found:
-		error_message = 'Based on these parameters you do not have enough items per screen to create a design.'
+		error_message = 'Based on these parameters, you do not have enough items per screen to create a design. Each screen must have at least 2 items.'
 		error_messages.append(error_message)
 
 	# checks if an error message is present and returns it to the front end
