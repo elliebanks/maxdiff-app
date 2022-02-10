@@ -113,6 +113,13 @@ def get_sample_design(
 	items_remaining = number_of_items - (max_items_per_screen * screens_with_max)
 	print(items_remaining)
 
+	if items_remaining < 0:
+		return (
+			f"Based on these parameters, it is not possible to create a design with"
+			f" {max_items_per_screen} maximum items on {screens_with_max} screens. You"
+			f" do not have enough items."
+		)
+
 	screens_remaining = number_of_screens - screens_with_max
 	print(screens_remaining)
 
